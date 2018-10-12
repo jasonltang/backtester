@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Backtester
 {
-    class MarketPrice
+    class Constants
     {
-        public DateTime Date { get; set; }
-        public decimal Price { get; set; }
+        public const bool Debug = true;
     }
 }

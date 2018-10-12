@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace Backtester
 {
-    class Trade
+    class TradeInstruction
     {
-        public DateTime Date { get; set; }
         public TradeDirection TradeDirection { get; set; }
         public int Units { get; set; }
-        public decimal Price { get; set; }
+
+        public static TradeInstruction None = new TradeInstruction()
+        {
+            TradeDirection = TradeDirection.None,
+            Units = 0
+        };
     }
 }

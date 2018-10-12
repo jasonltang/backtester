@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Backtester
 {
     interface ISimulator
     {
-        void Simulate(bool printPnl);
+        void Simulate(bool printTrades, bool printPnl);
     }
 
     class ConcreteSimulator : ISimulator
@@ -23,25 +24,85 @@ namespace Backtester
             this._strategy = strategy;
         }
 
-        public void Simulate(bool printPnl = false)
+        public void Simulate(bool printTrades = true, bool printPnl = false)
         {
             List<MarketPrice> prices = _dataReader.GetData();
-            _trades = GetTrades(prices);
-            _pnl = GetPnL();
+            GenerateTrades(prices);
+            GeneratePnL();
+
+            if (printTrades)
+            {
+                PrintTrades();
+            }
+
             if (printPnl)
             {
-                Console.WriteLine(this._pnl);
+                PrintPnl();
             }
         }
 
-        private List<Trade> GetTrades(List<MarketPrice> prices)
+        private void GenerateTrades(List<MarketPrice> prices)
         {
-            return new List<Trade>(); //TODO
+            _trades = new List<Trade>();
+            foreach (MarketPrice marketPrice in prices)
+            {
+                AddTradeInstructionIfExists(_strategy.ProcessData(marketPrice), marketPrice);
+            }
         }
 
-        private decimal GetPnL()
+        private void PrintTrades()
         {
-            return 0; //TODO
+            Console.WriteLine("List of trades (Date, direction, units, price):");
+            foreach(Trade trade in _trades)
+            {
+                Console.WriteLine(
+                    $"{trade.Date.ToString("d/M/yyyy")} ".PadRight(12) +
+                    $"{trade.TradeDirection} ".PadRight(6) +
+                    $"{trade.Units} ".PadRight(5) +
+                    $"{trade.Price}");
+            }
+            Console.WriteLine();
+        }
+
+        private void PrintPnl()
+        {
+            Console.WriteLine($"Total PnL: {this._pnl}");
+            Console.WriteLine();
+        }
+
+        private void AddTradeInstructionIfExists(TradeInstruction tradeInstruction, MarketPrice marketPrice)
+        {
+            if (tradeInstruction != TradeInstruction.None)
+            {
+                var trade = new Trade()
+                {
+                    Date = marketPrice.Date,
+                    TradeDirection = tradeInstruction.TradeDirection,
+                    Units = tradeInstruction.Units,
+                    Price = marketPrice.Price //Can attach a slippage logic here later
+                };
+                _trades.Add(trade);
+            }
+        }
+
+        private void GeneratePnL()
+        {
+            decimal runningPnl = 0;
+            foreach (Trade trade in _trades)
+            {
+                switch (trade.TradeDirection)
+                {
+                    case TradeDirection.Buy:
+                        runningPnl -= (trade.Price * trade.Units);
+                        break;
+                    case TradeDirection.Sell:
+                        runningPnl += (trade.Price * trade.Units);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            _pnl = runningPnl;
         }
     }
 }

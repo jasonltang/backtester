@@ -13,7 +13,7 @@ namespace Backtester
             IDataReader dataReader = new TestDataReader();
             IStrategy strategy = new TestStrategy();
             ISimulator simulator = new ConcreteSimulator(dataReader, strategy);
-            simulator.Simulate(printPnl:true);
+            simulator.Simulate(printTrades:true, printPnl:true);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Backtester
             {
                 DateTime date = new DateTime(2018, 1, 1).AddDays(i);
                 decimal price = 100 + (decimal)i / 10;
-                data.Add(new MarketPrice(date, price));
+                data.Add(new MarketPrice() { Date = date, Price = price });
             }
             return data;
         }

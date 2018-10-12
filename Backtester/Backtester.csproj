@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="DataReader.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="MarketPrice.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Simulator.cs" />
     <Compile Include="Strategy.cs" />
     <Compile Include="Trade.cs" />
+    <Compile Include="TradeInstruction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

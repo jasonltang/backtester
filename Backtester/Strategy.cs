@@ -9,24 +9,31 @@ namespace Backtester
 
     interface IStrategy
     {
-        TradeDirection ProcessData(MarketPrice marketPrice);
+        TradeInstruction ProcessData(MarketPrice marketPrice);
     }
 
     class TestStrategy : IStrategy
     {
-        public TradeDirection ProcessData(MarketPrice marketPrice)
+        public TradeInstruction ProcessData(MarketPrice marketPrice)
         {
             if (marketPrice.Date == new DateTime(2018, 2, 1))
             {
-                return TradeDirection.Buy;
+                return new TradeInstruction() {
+                    TradeDirection = TradeDirection.Buy,
+                    Units = 1
+                };
             }
             else if (marketPrice.Date == new DateTime(2018, 3, 1))
             {
-                return TradeDirection.Sell;
+                return new TradeInstruction()
+                {
+                    TradeDirection = TradeDirection.Sell,
+                    Units = 1
+                };
             }
             else
             {
-                return TradeDirection.None;
+                return TradeInstruction.None;
             }
         }
     }
