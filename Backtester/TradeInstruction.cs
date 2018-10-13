@@ -11,10 +11,12 @@ namespace Backtester
         public TradeDirection TradeDirection { get; set; }
         public int Units { get; set; }
 
-        public static TradeInstruction None = new TradeInstruction()
+        public TradeInstruction(TradeDirection tradeDirection, int units)
         {
-            TradeDirection = TradeDirection.None,
-            Units = 0
-        };
+            TradeDirection = tradeDirection;
+            Units = units;
+        }
+
+        public static TradeInstruction None = new TradeInstruction(tradeDirection:TradeDirection.None, units:0);
     }
 }

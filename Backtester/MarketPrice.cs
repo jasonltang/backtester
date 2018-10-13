@@ -10,5 +10,11 @@ namespace Backtester
     {
         public DateTime Date { get; set; }
         public decimal Price { get; set; }
+
+        public MarketPrice(DateTime date, decimal price)
+        {
+            Date = date;
+            Price = price;
+        }
     }
 }

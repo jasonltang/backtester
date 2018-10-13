@@ -12,5 +12,13 @@ namespace Backtester
         public TradeDirection TradeDirection { get; set; }
         public int Units { get; set; }
         public decimal Price { get; set; }
+
+        public Trade(DateTime date, TradeDirection tradeDirection, int units, decimal price)
+        {
+            Date = date;
+            TradeDirection = tradeDirection;
+            Units = units;
+            Price = price;
+        }
     }
 }

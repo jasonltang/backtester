@@ -18,18 +18,11 @@ namespace Backtester
         {
             if (marketPrice.Date == new DateTime(2018, 2, 1))
             {
-                return new TradeInstruction() {
-                    TradeDirection = TradeDirection.Buy,
-                    Units = 1
-                };
+                return new TradeInstruction(TradeDirection.Buy, 1);
             }
             else if (marketPrice.Date == new DateTime(2018, 3, 1))
             {
-                return new TradeInstruction()
-                {
-                    TradeDirection = TradeDirection.Sell,
-                    Units = 1
-                };
+                return new TradeInstruction(TradeDirection.Sell, 1);
             }
             else
             {

@@ -24,7 +24,7 @@ namespace Backtester
             this._strategy = strategy;
         }
 
-        public void Simulate(bool printTrades = true, bool printPnl = false)
+        public void Simulate(bool printTrades = false, bool printPnl = false)
         {
             List<MarketPrice> prices = _dataReader.GetData();
             GenerateTrades(prices);
@@ -74,13 +74,11 @@ namespace Backtester
         {
             if (tradeInstruction != TradeInstruction.None)
             {
-                var trade = new Trade()
-                {
-                    Date = marketPrice.Date,
-                    TradeDirection = tradeInstruction.TradeDirection,
-                    Units = tradeInstruction.Units,
-                    Price = marketPrice.Price //Can attach a slippage logic here later
-                };
+                var trade = new Trade(
+                    marketPrice.Date,
+                    tradeInstruction.TradeDirection,
+                    tradeInstruction.Units,
+                    marketPrice.Price); //Can attach some slippage logic here later
                 _trades.Add(trade);
             }
         }
