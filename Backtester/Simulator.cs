@@ -9,7 +9,7 @@ namespace Backtester
 {
     interface ISimulator
     {
-        void Simulate(bool printTrades, bool printPnl);
+        bool Simulate(bool printTrades, bool printPnl);
     }
 
     class ConcreteSimulator : ISimulator
@@ -24,9 +24,12 @@ namespace Backtester
             this._strategy = strategy;
         }
 
-        public void Simulate(bool printTrades = false, bool printPnl = false)
+        public bool Simulate(bool printTrades = false, bool printPnl = false)
         {
-            List<MarketPrice> prices = _dataReader.GetData();
+            if (!_dataReader.GetData(out List<MarketPrice> prices))
+            {
+                return false;
+            }
             GenerateTrades(prices);
             GeneratePnL();
 
@@ -39,6 +42,7 @@ namespace Backtester
             {
                 PrintPnl();
             }
+            return true;
         }
 
         private void GenerateTrades(List<MarketPrice> prices)
@@ -52,22 +56,21 @@ namespace Backtester
 
         private void PrintTrades()
         {
-            Console.WriteLine("List of trades (Date, direction, units, price):");
+            TextBoxWriter.WriteLine("List of trades (Date, direction, units, price):");
             foreach(Trade trade in _trades)
             {
-                Console.WriteLine(
+                TextBoxWriter.WriteLine(
                     $"{trade.Date.ToString("d/M/yyyy")} ".PadRight(12) +
                     $"{trade.TradeDirection} ".PadRight(6) +
                     $"{trade.Units} ".PadRight(5) +
                     $"{trade.Price}");
             }
-            Console.WriteLine();
+            TextBoxWriter.WriteLine();
         }
 
         private void PrintPnl()
         {
-            Console.WriteLine($"Total PnL: {this._pnl}");
-            Console.WriteLine();
+            TextBoxWriter.WriteMessage($"Total PnL: {this._pnl}");
         }
 
         private void AddTradeInstructionIfExists(TradeInstruction tradeInstruction, MarketPrice marketPrice)

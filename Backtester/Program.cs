@@ -1,22 +1,24 @@
-﻿//TODO: Convert from console application to a windows form application
+﻿// TODO: More results, e.g. stdev of returns, p-value, etc.
+// More complex simulations, e.g. multiple markets
+// Create more strategies.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Backtester
 {
     class Program
     {
+        [STAThreadAttribute]
         static void Main(string[] args)
         {
-
-            IDataReader dataReader = new CsvDataReader();
-            IStrategy strategy = new TestStrategy();
-            ISimulator simulator = new ConcreteSimulator(dataReader, strategy);
-            simulator.Simulate(printTrades:true, printPnl:true);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
         }
     }
 }
