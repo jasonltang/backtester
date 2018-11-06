@@ -20,15 +20,15 @@ namespace Backtester.Strategies
             indicatorsToProcess.Add(numDaysIndicator);
             indicatorsToProcess.Add(adrIndicator);
         }
-        protected override TradeInstruction ProcessStrategy(MarketPrice marketPrice)
+        protected override Bet ProcessStrategy(MarketPrice marketPrice)
         {
             // Strategy logic here - edit however you like
             if (numDaysIndicator.Value == 20)
             {
-                return new TradeInstruction(TradeDirection.Buy, 1);
+                return new Bet(TradeDirection.Buy, 1, new TimeBasedExitCondition(5));
             }
             {
-                return TradeInstruction.None;
+                return Bet.None;
             }
         }
     }

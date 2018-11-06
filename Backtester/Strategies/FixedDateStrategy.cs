@@ -8,19 +8,19 @@ namespace Backtester.Strategies
 {
     class FixedDateStrategy : Strategy
     {
-        protected override TradeInstruction ProcessStrategy(MarketPrice marketPrice)
+        protected override Bet ProcessStrategy(MarketPrice marketPrice)
         {
             if (marketPrice.Date == new DateTime(2018, 2, 1))
             {
-                return new TradeInstruction(TradeDirection.Buy, 1);
+                return new Bet(TradeDirection.Buy, 1, new TimeBasedExitCondition(5));
             }
             else if (marketPrice.Date == new DateTime(2018, 3, 1))
             {
-                return new TradeInstruction(TradeDirection.Sell, 1);
+                return new Bet(TradeDirection.Sell, 1, new TimeBasedExitCondition(5));
             }
             else
             {
-                return TradeInstruction.None;
+                return Bet.None;
             }
         }
     }

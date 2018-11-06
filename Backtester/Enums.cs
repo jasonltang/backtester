@@ -12,4 +12,10 @@ namespace Backtester
         Sell = 2,
         None = 3
     }
+
+    public enum BetStatus
+    {
+        Open = 1,
+        Closed = 0
+    }
 }

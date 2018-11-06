@@ -48,10 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bet.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ControlWriter.cs" />
     <Compile Include="DataReader.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="ExitConditions.cs" />
     <Compile Include="Indicators\ADRIndicator.cs" />
     <Compile Include="Indicators\Indicator.cs" />
     <Compile Include="Indicators\MovingAverageIndicator.cs" />
@@ -70,7 +72,6 @@
     <Compile Include="Strategies\ADRStrategy.cs" />
     <Compile Include="Strategies\TemplateStrategy.cs" />
     <Compile Include="Trade.cs" />
-    <Compile Include="TradeInstruction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

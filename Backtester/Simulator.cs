@@ -18,6 +18,7 @@ namespace Backtester
         private IDataReader _dataReader;
         private Strategy _strategy;
         private List<Trade> _trades;
+        private List<Bet> _bets;
         private decimal _pnl;
         public ConcreteSimulator(IDataReader dataReader, Strategy strategy)
         {
@@ -25,13 +26,14 @@ namespace Backtester
             this._strategy = strategy;
         }
 
-        public bool Simulate(bool printTrades = false, bool printPnl = false)
+        public bool Simulate(bool printTrades = false, bool printStats = true)
         {
             if (!_dataReader.GetData(out List<MarketPrice> prices))
             {
                 return false;
             }
-            GenerateTrades(prices);
+            ProcessDataToGenerateBets(prices);
+            GetTradesFromBets();
             GeneratePnL(prices.Last());
 
             if (printTrades)
@@ -39,20 +41,49 @@ namespace Backtester
                 PrintTrades();
             }
 
-            if (printPnl)
+            if (printStats)
             {
-                PrintPnl();
+                PrintStats();
             }
             return true;
         }
 
-        private void GenerateTrades(List<MarketPrice> prices)
+        private void ProcessDataToGenerateBets(List<MarketPrice> prices)
         {
-            _trades = new List<Trade>();
+            _bets = new List<Bet>();
             foreach (MarketPrice marketPrice in prices)
             {
-                AddTradeInstructionIfExists(_strategy.ProcessData(marketPrice), marketPrice);
+                ExitExpiredBets(marketPrice);
+                AddBetIfExists(_strategy.ProcessData(marketPrice), marketPrice);
             }
+        }
+
+        private void ExitExpiredBets(MarketPrice currentPrice)
+        {
+            var openBets = _bets.Where(b => b.Status == BetStatus.Open);
+            foreach (Bet bet in openBets)
+            {
+                if (bet.ShouldExit(currentPrice))
+                {
+                    var exitDirection = bet.TradeDirection == TradeDirection.Buy ? TradeDirection.Sell : TradeDirection.Buy;
+                    bet.ExitTrade = new Trade(currentPrice.Date, exitDirection, bet.Units, currentPrice.Price);
+                    bet.Status = BetStatus.Closed;
+                }
+            }
+        }
+
+        private void GetTradesFromBets()
+        {
+            _trades = new List<Trade>();
+            foreach (Bet bet in _bets)
+            {
+                _trades.Add(bet.EntryTrade);
+                if (bet.ExitTrade != null)
+                {
+                    _trades.Add(bet.ExitTrade);
+                }
+            }
+            _trades = _trades.OrderBy(t => t.Date).ToList();
         }
 
         private void PrintTrades()
@@ -74,21 +105,18 @@ namespace Backtester
             TextBoxWriter.WriteLine();
         }
 
-        private void PrintPnl()
+        private void PrintStats()
         {
             TextBoxWriter.WriteMessage($"Total PnL: {this._pnl}");
+            // TODO: Add more stuff here
         }
 
-        private void AddTradeInstructionIfExists(TradeInstruction tradeInstruction, MarketPrice marketPrice)
+        private void AddBetIfExists(Bet bet, MarketPrice marketPrice)
         {
-            if (tradeInstruction != TradeInstruction.None)
+            if (bet != Bet.None)
             {
-                var trade = new Trade(
-                    marketPrice.Date,
-                    tradeInstruction.TradeDirection,
-                    tradeInstruction.Units,
-                    marketPrice.Price); //Can attach some slippage logic here later
-                _trades.Add(trade);
+                bet.EntryTrade = new Trade(marketPrice.Date, bet.TradeDirection, bet.Units, marketPrice.Price);
+                _bets.Add(bet);
             }
         }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backtester
 {
-    class Trade
+    public class Trade
     {
         public DateTime Date { get; set; }
         public TradeDirection TradeDirection { get; set; }

@@ -1,8 +1,8 @@
-﻿// TODO: Calculate risk/reward ratio and compare against simulated random trades with same average magnitude, returning a p-value.
+﻿// TODO: 
+// Price-based exit condition.
+// Calculate risk/reward ratio and compare against simulated random trades with same average magnitude, returning a p-value.
 // More results, e.g. stdev of returns, p-value, etc.
-// More complex simulations, e.g. multiple markets
-// Create more strategies.
-// Need proper entry/exit logic pairs.
+// Need ability to load multiple csv files.
 
 
 using System;

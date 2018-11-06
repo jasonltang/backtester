@@ -10,23 +10,23 @@ namespace Backtester.Strategies
     class ADRStrategy : Strategy
     {
         Indicator adrIndicator;
-        
+
         public ADRStrategy()
         {
             adrIndicator = new ADRIndicator(5);
             indicatorsToProcess.Add(adrIndicator);
         }
 
-        protected override TradeInstruction ProcessStrategy(MarketPrice marketPrice)
+        protected override Bet ProcessStrategy(MarketPrice marketPrice)
         {
             if (adrIndicator.Value > 0.03m)
             {
-                return new TradeInstruction(TradeDirection.Buy, 1);
+                return new Bet(TradeDirection.Buy, 1, new TimeBasedExitCondition(5));
             }
 
             else
             {
-                return TradeInstruction.None;
+                return Bet.None;
             }
         }
     }

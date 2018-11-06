@@ -25,24 +25,24 @@ namespace Backtester.Strategies
             indicatorsToProcess.Add(movingAverageIndicatorShort);
             indicatorsToProcess.Add(movingAverageIndicatorLong);
         }
-        protected override TradeInstruction ProcessStrategy(MarketPrice marketPrice)
+        protected override Bet ProcessStrategy(MarketPrice marketPrice)
         {
             if (numDaysIndicator.Value < 10)
             {
-                return TradeInstruction.None;
+                return Bet.None;
             }
             decimal movingAverageStrength = (movingAverageIndicatorShort.Value - movingAverageIndicatorLong.Value) / adrIndicator.Value;
             if (movingAverageStrength > 4m)
             {
-                return new TradeInstruction(TradeDirection.Buy, 1);
+                return new Bet(TradeDirection.Buy, 1, new TimeBasedExitCondition(5));
             }
             else if (movingAverageStrength < -4m)
             {
-                return new TradeInstruction(TradeDirection.Sell, 1);
+                return new Bet(TradeDirection.Sell, 1, new TimeBasedExitCondition(5));
             }
             else
             {
-                return TradeInstruction.None;
+                return Bet.None;
             }
         }
     }

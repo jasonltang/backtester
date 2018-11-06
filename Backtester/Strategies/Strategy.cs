@@ -11,7 +11,7 @@ namespace Backtester.Strategies
     public abstract class Strategy
     {
         protected List<Indicator> indicatorsToProcess = new List<Indicator>();
-        public TradeInstruction ProcessData(MarketPrice marketPrice)
+        public Bet ProcessData(MarketPrice marketPrice)
         {
             ProcessIndicators(marketPrice);
             return ProcessStrategy(marketPrice);
@@ -23,6 +23,6 @@ namespace Backtester.Strategies
                 indicator.Calculate(marketPrice);
             }
         }
-        protected abstract TradeInstruction ProcessStrategy(MarketPrice marketPrice);
+        protected abstract Bet ProcessStrategy(MarketPrice marketPrice);
     }
 }
