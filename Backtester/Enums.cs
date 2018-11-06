@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backtester
 {
-    enum TradeDirection
+    public enum TradeDirection
     {
         Buy = 1,
         Sell = 2,

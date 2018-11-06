@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backtester
 {
-    class TradeInstruction
+    public class TradeInstruction
     {
         public TradeDirection TradeDirection { get; set; }
         public int Units { get; set; }

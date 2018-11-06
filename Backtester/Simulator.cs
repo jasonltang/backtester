@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Backtester.Strategies;
 
 
 namespace Backtester
@@ -15,10 +16,10 @@ namespace Backtester
     class ConcreteSimulator : ISimulator
     {
         private IDataReader _dataReader;
-        private IStrategy _strategy;
+        private Strategy _strategy;
         private List<Trade> _trades;
         private decimal _pnl;
-        public ConcreteSimulator(IDataReader dataReader, IStrategy strategy)
+        public ConcreteSimulator(IDataReader dataReader, Strategy strategy)
         {
             this._dataReader = dataReader;
             this._strategy = strategy;
@@ -31,7 +32,7 @@ namespace Backtester
                 return false;
             }
             GenerateTrades(prices);
-            GeneratePnL();
+            GeneratePnL(prices.Last());
 
             if (printTrades)
             {
@@ -66,6 +67,11 @@ namespace Backtester
                     $"{trade.Price}");
             }
             TextBoxWriter.WriteLine();
+            int totalBuys = _trades.Where(t => t.TradeDirection == TradeDirection.Buy).Sum(t => t.Units);
+            int totalSells = _trades.Where(t => t.TradeDirection == TradeDirection.Sell).Sum(t => t.Units);
+            TextBoxWriter.WriteLine($"Total bought quantity: {totalBuys}");
+            TextBoxWriter.WriteLine($"Total sold quantity: {totalSells}");
+            TextBoxWriter.WriteLine();
         }
 
         private void PrintPnl()
@@ -86,8 +92,9 @@ namespace Backtester
             }
         }
 
-        private void GeneratePnL()
+        private void GeneratePnL(MarketPrice lastPrice)
         {
+            int buys = 0, sells = 0;
             decimal runningPnl = 0;
             foreach (Trade trade in _trades)
             {
@@ -95,15 +102,19 @@ namespace Backtester
                 {
                     case TradeDirection.Buy:
                         runningPnl -= (trade.Price * trade.Units);
+                        buys += trade.Units;
                         break;
                     case TradeDirection.Sell:
                         runningPnl += (trade.Price * trade.Units);
+                        sells += trade.Units;
                         break;
                     default:
                         break;
                 }
             }
-            _pnl = runningPnl;
+            int remainingPosition = buys - sells;
+            decimal unrealisedPnL = remainingPosition * lastPrice.Price;
+            _pnl = runningPnl + unrealisedPnL;
         }
     }
 }

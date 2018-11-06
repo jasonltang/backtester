@@ -1,6 +1,9 @@
-﻿// TODO: More results, e.g. stdev of returns, p-value, etc.
+﻿// TODO: Calculate risk/reward ratio and compare against simulated random trades with same average magnitude, returning a p-value.
+// More results, e.g. stdev of returns, p-value, etc.
 // More complex simulations, e.g. multiple markets
 // Create more strategies.
+// Need proper entry/exit logic pairs.
+
 
 using System;
 using System.Collections.Generic;

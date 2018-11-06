@@ -4,17 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Backtester
+namespace Backtester.Strategies
 {
-
-    interface IStrategy
+    class FixedDateStrategy : Strategy
     {
-        TradeInstruction ProcessData(MarketPrice marketPrice);
-    }
-
-    class TestStrategy : IStrategy
-    {
-        public TradeInstruction ProcessData(MarketPrice marketPrice)
+        protected override TradeInstruction ProcessStrategy(MarketPrice marketPrice)
         {
             if (marketPrice.Date == new DateTime(2018, 2, 1))
             {

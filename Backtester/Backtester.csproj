@@ -52,6 +52,11 @@
     <Compile Include="ControlWriter.cs" />
     <Compile Include="DataReader.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Indicators\ADRIndicator.cs" />
+    <Compile Include="Indicators\Indicator.cs" />
+    <Compile Include="Indicators\MovingAverageIndicator.cs" />
+    <Compile Include="Indicators\NumDaysIndicator.cs" />
+    <Compile Include="Indicators\TemplateIndicator.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,7 +64,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Simulator.cs" />
-    <Compile Include="Strategy.cs" />
+    <Compile Include="Strategies\MovingAverageStrategy.cs" />
+    <Compile Include="Strategies\Strategy.cs" />
+    <Compile Include="Strategies\FixedDateStrategy.cs" />
+    <Compile Include="Strategies\ADRStrategy.cs" />
+    <Compile Include="Strategies\TemplateStrategy.cs" />
     <Compile Include="Trade.cs" />
     <Compile Include="TradeInstruction.cs" />
   </ItemGroup>

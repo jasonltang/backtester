@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backtester
 {
-    class MarketPrice
+    public class MarketPrice
     {
         public DateTime Date { get; set; }
         public decimal Price { get; set; }
